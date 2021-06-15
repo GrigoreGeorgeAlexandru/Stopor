@@ -1,4 +1,5 @@
 import 'package:algolia/algolia.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -18,8 +19,37 @@ class BottomNav extends StatefulWidget {
 }
 
 class _State extends State<BottomNav> {
+  FirebaseMessaging messaging;
   @override
   void initState() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    print("message recieved");
+    print(event.notification.body);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Notification"),
+            content: Text(event.notification.body),
+            actions: [
+              TextButton(
+                child: Text("Ok"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    print('Message clicked!');
+  });
+  super.initState();
+  messaging = FirebaseMessaging.instance;
+  messaging.getToken().then((value){
+    print(value);
+  });
     String photoURL = context.read<AuthenticationService>().getUser().photoURL;
     var image = photoURL != null
         ? NetworkImage(photoURL)

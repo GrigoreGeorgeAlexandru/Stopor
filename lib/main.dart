@@ -10,15 +10,16 @@ import 'package:stopor/auth/authentication_wrapper.dart';
 import 'auth/authentication_service.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
+
   await Firebase.initializeApp();
 
   print("Handling a background message: ${message.messageId}");
-
-  // Use this method to automatically convert the push data, in case you gonna use our data standard
+  
   AwesomeNotifications().createNotificationFromJsonData(message.data);
 }
+
+
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AwesomeNotifications().initialize(null, [NotificationChannel(
@@ -40,6 +41,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -68,3 +70,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
