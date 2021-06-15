@@ -19,7 +19,7 @@ class _NotificationsState extends State<Notifications> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Notify();
+
           },
           child: Icon(Icons.circle_notifications),
         ),
@@ -27,9 +27,33 @@ class _NotificationsState extends State<Notifications> {
     );
   }
 }
-
-void Notify() async {
+int id=0;
+void Notify(DateTime time,String name,String eventImage) async {
+  print("Notification Start");
+  id++;
+  print(id);
+  String localTimeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
   await AwesomeNotifications().createNotification(
       content: NotificationContent(
-          id: 1, channelKey: 'key1', title: 'test title', body: 'test body'));
+
+          id: id,
+          channelKey: 'scheduled',
+          title:name,
+          body: 'There are 24 hours left until this event starts!',
+          notificationLayout: NotificationLayout.BigPicture,
+          bigPicture:eventImage
+
+      ),
+      schedule: NotificationCalendar(
+          year:time.year,
+          month:time.month,
+          day: time.subtract(new Duration(days: 1)).day,
+          hour:time.hour,
+          minute:time.minute,
+          second:time.second,
+          millisecond:time.microsecond,
+          timeZone: localTimeZone,
+          repeats: false
+      ));
+  print("Notification End");
 }

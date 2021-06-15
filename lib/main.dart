@@ -14,7 +14,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 
   print("Handling a background message: ${message.messageId}");
-  
+
   AwesomeNotifications().createNotificationFromJsonData(message.data);
 }
 
@@ -23,7 +23,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AwesomeNotifications().initialize(null, [NotificationChannel(
-    channelKey: 'key1',
+    channelKey: 'scheduled',
     channelName:'test channel',
     channelDescription: 'test description',
     playSound:false
